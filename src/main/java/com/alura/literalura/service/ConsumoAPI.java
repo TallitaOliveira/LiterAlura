@@ -6,7 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class ConsomeAPI {
+public class ConsumoAPI {
     public String obterDados(String url) {
         try {
             HttpClient client = HttpClient.newHttpClient();

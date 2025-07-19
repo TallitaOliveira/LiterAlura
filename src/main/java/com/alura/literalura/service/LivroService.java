@@ -18,7 +18,7 @@ public class LivroService {
     @Autowired
     private AutorRepository autorRepository;
 
-    private final ConsomeAPI consomeAPI = new ConsomeAPI();
+    private final ConsumoAPI consomeAPI = new ConsumoAPI();
     private final ConverteDados converteDados = new ConverteDados();
 
     public void buscarLivro(String titulo) {

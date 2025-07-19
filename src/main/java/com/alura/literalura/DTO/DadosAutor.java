@@ -1,4 +1,4 @@
-package com.alura.literalura.dto;
+package com.alura.literalura.DTO;
 
 
 import com.fasterxml.jackson.annotation.JsonAlias;

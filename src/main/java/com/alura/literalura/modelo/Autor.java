@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "autores")
 public class Autor {
 
     @Id
@@ -12,13 +13,22 @@ public class Autor {
 
     private String nome;
 
-    private Integer anoNascimento;
+    private Integer anoDeNascimento;
 
-    private Integer anoFalecimento;
+    private Integer anoDeFalecimento;
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
-    private List<com.alura.literalura.modelo.Livro> livros;
+    private List<Livro> livros;
 
+    public Autor(){
+
+    }
+
+    public Autor(String nome, String anoDeNascimento, String anoDeFalecimento) {
+        this.nome = nome;
+        this.anoDeNascimento = Integer.valueOf(anoDeNascimento);
+        this.anoDeFalecimento= Integer.valueOf(anoDeFalecimento);
+    }
 
 
     public Long getId() {
@@ -38,19 +48,19 @@ public class Autor {
     }
 
     public Integer getAnoNascimento() {
-        return anoNascimento;
+        return anoDeNascimento;
     }
 
     public void setAnoNascimento(Integer anoNascimento) {
-        this.anoNascimento = anoNascimento;
+        this.anoDeNascimento = anoNascimento;
     }
 
     public Integer getAnoFalecimento() {
-        return anoFalecimento;
+        return anoDeFalecimento;
     }
 
     public void setAnoFalecimento(Integer anoFalecimento) {
-        this.anoFalecimento = anoFalecimento;
+        this.anoDeFalecimento = anoFalecimento;
     }
 
     public List<com.alura.literalura.modelo.Livro> getLivros() {
@@ -65,8 +75,8 @@ public class Autor {
     public String toString() {
         return "Autor{" +
                 "nome='" + nome + '\'' +
-                ", nascimento=" + anoNascimento +
-                ", falecimento=" + anoFalecimento +
+                ", nascimento=" + anoDeNascimento +
+                ", falecimento=" + anoDeFalecimento +
                 '}';
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 import java.util.List;
 
-public record Dados(
+public record DadosResultado(
         @JsonAlias("results")List<DadosLivro> resultados
         ) {
 }

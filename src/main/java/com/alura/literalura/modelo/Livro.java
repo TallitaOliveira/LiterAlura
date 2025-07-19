@@ -1,5 +1,6 @@
 package com.alura.literalura.modelo;
 
+import com.alura.literalura.DTO.DadosLivro;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,7 +17,17 @@ public class Livro {
     @ManyToOne
     private Autor autor;
 
-    // Getters e Setters
+    public Livro(){
+
+    }
+
+    public Livro(DadosLivro dadosLivro, Autor autor){
+        this.titulo = dadosLivro.titulo();
+        this.autor = autor;
+        this.idioma = dadosLivro.idiomas().get(0);
+        this.numeroDownloads = dadosLivro.dowloands();
+    }
+
 
     public Long getId() {
         return id;
