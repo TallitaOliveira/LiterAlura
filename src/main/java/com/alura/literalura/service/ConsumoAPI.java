@@ -13,6 +13,7 @@ public class ConsomeAPI {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .build();
+
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (IOException | InterruptedException e) {
