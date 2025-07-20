@@ -1,5 +1,8 @@
 package com.alura.literalura.service;
 
+import com.alura.literalura.DTO.DadosAutor;
+import com.alura.literalura.DTO.DadosLivro;
+import com.alura.literalura.DTO.DadosResultado;
 import com.alura.literalura.modelo.Autor;
 import com.alura.literalura.modelo.Livro;
 import com.alura.literalura.repository.AutorRepository;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LivroService {
@@ -25,14 +29,45 @@ public class LivroService {
         String url = "https://gutendex.com/books/?search=" + titulo.replace(" ", "%20");
         String json = consomeAPI.obterDados(url);
 
-        // Aqui você pode mapear manualmente o JSON para o DTO (ou usar uma classe de resposta personalizada)
-        // Suponha que você já extraiu os campos relevantes:
-        // LivroDTO livroDTO = converteDados.obterDados(json, LivroDTO.class);
-        // ...
+        DadosResultado dadosResultado = converteDados.obterDados(json, DadosResultado.class);
 
-        System.out.println(">> JSON da API (exibição simulada):");
-        System.out.println(json); // apenas exibindo
+
+        if (dadosResultado != null && !dadosResultado.resultados().isEmpty()) {
+            DadosLivro dadosLivro = dadosResultado.resultados().get(0);
+            Livro livro = converterDadosParaLivro(dadosLivro);
+            livroRepository.save(livro);
+
+            System.out.println("Livro salvo: " + livro.getTitulo());
+        } else {
+            System.out.println("Nenhum livro encontrado com o título: " + titulo);
+        }
     }
+    private Livro converterDadosParaLivro(DadosLivro dadosLivro) {
+        List<Autor> autores = dadosLivro.autores().stream()
+                .map(this::processarAutor)
+                .toList();
+
+        return new Livro(
+                dadosLivro.titulo(),
+                dadosLivro.idiomas().isEmpty() ? "en" : dadosLivro.idiomas().get(0),
+                dadosLivro.download(),
+                autores
+        );
+    }
+
+    private Autor processarAutor(DadosAutor dadosAutor) {
+        Optional<Autor> autorExistente = autorRepository.findByNome(dadosAutor.nome());
+
+        return autorExistente.orElseGet(() -> {
+            Autor novoAutor = new Autor(
+                    dadosAutor.nome(),
+                    dadosAutor.anoDeNascimento(),
+                    dadosAutor.anoDeFalecimento()
+            );
+            return autorRepository.save(novoAutor);
+        });
+    }
+
 
     public void listarLivros() {
         List<Livro> livros = livroRepository.findAll();

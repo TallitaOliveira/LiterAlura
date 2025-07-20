@@ -3,7 +3,12 @@ package com.alura.literalura.modelo;
 import com.alura.literalura.DTO.DadosLivro;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
+@Table(name = "livros")
+
+
 public class Livro {
 
     @Id
@@ -12,20 +17,27 @@ public class Livro {
 
     private String titulo;
     private String idioma;
-    private Integer numeroDownloads;
+    private Integer downloads;
 
-    @ManyToOne
-    private Autor autor;
+    @ManyToOne(fetch= FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "livro_autor",
+            joinColumns = @JoinColumn(name = "livro_id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id")
+    )
+    private List<Autor> autores;
 
     public Livro(){
-
     }
 
-    public Livro(DadosLivro dadosLivro, Autor autor){
+    public Livro(DadosLivro dadosLivro, List<Autor> autores){
         this.titulo = dadosLivro.titulo();
-        this.autor = autor;
         this.idioma = dadosLivro.idiomas().get(0);
-        this.numeroDownloads = dadosLivro.dowloands();
+        this.downloads = dadosLivro.download();
+        this.autores = autores;
+    }
+
+    public Livro(String titulo, String s, Integer download, List<Autor> autores) {
     }
 
 
@@ -53,20 +65,20 @@ public class Livro {
         this.idioma = idioma;
     }
 
-    public Integer getNumeroDownloads() {
-        return numeroDownloads;
+    public Integer getDownloads() {
+        return downloads;
     }
 
-    public void setNumeroDownloads(Integer numeroDownloads) {
-        this.numeroDownloads = numeroDownloads;
+    public void setDownloads(Integer downloads) {
+        this.downloads = downloads;
     }
 
-    public Autor getAutor() {
-        return autor;
+    public List <Autor> getAutores() {
+        return autores;
     }
 
-    public void setAutor(Autor autor) {
-        this.autor = autor;
+    public void setAutor(List <Autor> autores) {
+        this.autores = autores;
     }
 
     @Override
@@ -74,8 +86,8 @@ public class Livro {
         return "Livro{" +
                 "titulo='" + titulo + '\'' +
                 ", idioma='" + idioma + '\'' +
-                ", downloads=" + numeroDownloads +
-                ", autor=" + (autor != null ? autor.getNome() : "Desconhecido") +
+                ", downloads=" + downloads +
+                ", autores=" + autores +
                 '}';
     }
 }

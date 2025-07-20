@@ -72,15 +72,15 @@ public class Principal {
         if (resultado != null && !resultado.resultados().isEmpty()) {
             DadosLivro dadosLivro = resultado.resultados().get(0);
 
-            DadosAutor dadosAutor = dadosLivro.authors().get(0);
+            DadosAutor dadosAutor = dadosLivro.autores().get(0);
             Autor autor = new Autor(dadosAutor.nome(), dadosAutor.anoDeNascimento(), dadosAutor.anoDeFalecimento());
             autorRepository.save(autor);
 
             Livro livro = new Livro();
             livro.setTitulo(dadosLivro.titulo());
             livro.setIdioma(dadosLivro.idiomas().get(0));
-            livro.setNumeroDownloads(dadosLivro.dowloands());
-            livro.setAutor(autor);
+            livro.setDownloads(dadosLivro.download());
+
 
             livroRepository.save(livro);
 
