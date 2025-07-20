@@ -13,22 +13,23 @@ public class Autor {
 
     private String nome;
 
-    private Integer anoDeNascimento;
+    private Integer anoNascimento;
 
-    private Integer anoDeFalecimento;
+    private Integer anoFalecimento;
 
-    @OneToMany(mappedBy = "autores", cascade = CascadeType.ALL)
+    @ManyToMany (mappedBy = "autores", cascade = CascadeType.ALL)
     private List<Livro> livros;
 
     public Autor(){
 
     }
-
     public Autor(String nome, String anoDeNascimento, String anoDeFalecimento) {
         this.nome = nome;
-        this.anoDeNascimento = Integer.valueOf(anoDeNascimento);
-        this.anoDeFalecimento= Integer.valueOf(anoDeFalecimento);
+        this.anoNascimento = anoDeNascimento != null ? Integer.valueOf(anoDeNascimento) : null;
+        this.anoFalecimento = anoDeFalecimento != null ? Integer.valueOf(anoDeFalecimento) : null;
     }
+
+
 
 
     public Long getId() {
@@ -48,19 +49,19 @@ public class Autor {
     }
 
     public Integer getAnoNascimento() {
-        return anoDeNascimento;
+        return anoNascimento;
     }
 
     public void setAnoNascimento(Integer anoNascimento) {
-        this.anoDeNascimento = anoNascimento;
+        this.anoNascimento = anoNascimento;
     }
 
     public Integer getAnoFalecimento() {
-        return anoDeFalecimento;
+        return anoFalecimento;
     }
 
     public void setAnoFalecimento(Integer anoFalecimento) {
-        this.anoDeFalecimento = anoFalecimento;
+        this.anoFalecimento = anoFalecimento;
     }
 
     public List<com.alura.literalura.modelo.Livro> getLivros() {
@@ -75,8 +76,8 @@ public class Autor {
     public String toString() {
         return "Autor{" +
                 "nome='" + nome + '\'' +
-                ", nascimento=" + anoDeNascimento +
-                ", falecimento=" + anoDeFalecimento +
+                ", nascimento=" + anoNascimento +
+                ", falecimento=" + anoFalecimento +
                 '}';
     }
 }

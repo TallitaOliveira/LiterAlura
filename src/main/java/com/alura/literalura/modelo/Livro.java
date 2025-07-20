@@ -19,7 +19,7 @@ public class Livro {
     private String idioma;
     private Integer downloads;
 
-    @ManyToOne(fetch= FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch= FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "livro_autor",
             joinColumns = @JoinColumn(name = "livro_id"),
@@ -37,7 +37,14 @@ public class Livro {
         this.autores = autores;
     }
 
-    public Livro(String titulo, String s, Integer download, List<Autor> autores) {
+
+
+
+    public Livro(String titulo, String idioma, Integer downloads, List<Autor> autores) {
+        this.titulo = titulo;
+        this.idioma = idioma;
+        this.downloads = downloads;
+        this.autores = autores;
     }
 
 
@@ -77,7 +84,7 @@ public class Livro {
         return autores;
     }
 
-    public void setAutor(List <Autor> autores) {
+    public void setAutores(List <Autor> autores) {
         this.autores = autores;
     }
 

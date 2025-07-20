@@ -47,14 +47,19 @@ public class LivroService {
                 .map(this::processarAutor)
                 .toList();
 
+        // Tratamento seguro para idiomas
+        String idioma = "en"; // Valor padrão
+        if (dadosLivro.idiomas() != null && !dadosLivro.idiomas().isEmpty()) {
+            idioma = dadosLivro.idiomas().get(0);
+        }
+
         return new Livro(
                 dadosLivro.titulo(),
-                dadosLivro.idiomas().isEmpty() ? "en" : dadosLivro.idiomas().get(0),
+                idioma,
                 dadosLivro.download(),
                 autores
         );
     }
-
     private Autor processarAutor(DadosAutor dadosAutor) {
         Optional<Autor> autorExistente = autorRepository.findByNome(dadosAutor.nome());
 
@@ -71,7 +76,7 @@ public class LivroService {
 
     public void listarLivros() {
         List<Livro> livros = livroRepository.findAll();
-        livros.forEach(l -> System.out.println("📖 " + l.getTitulo()));
+        livros.forEach(l -> System.out.println( l.getTitulo()));
     }
 
     public void listarAutoresVivos(int ano) {
@@ -83,6 +88,6 @@ public class LivroService {
 
     public void listarLivrosPorIdioma(String idioma) {
         List<Livro> livros = livroRepository.findByIdioma(idioma);
-        livros.forEach(l -> System.out.println("📘 " + l.getTitulo()));
+        livros.forEach(l -> System.out.println( l.getTitulo()));
     }
 }
